@@ -4,6 +4,10 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useTheme } from '@react-navigation/native';
 
+//Store
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/auth/authActions";
+
 //Components
 import AuthInput from "../components/AuthInput";
 import AuthPageDesc from "../components/AuthPageDesc";
@@ -15,8 +19,11 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch()
+  const { loading, error } = useSelector((state) => state.auth)
+
   const loginSubmit = () => {
-    navigation.navigate('Login')
+    dispatch(login({ email, password }))
   }
 
   return (
@@ -25,6 +32,9 @@ const LoginScreen = ({ navigation }) => {
         <KeyboardAwareScrollView style={{ height: "100%" }}>
           <View style={{ paddingTop: 50, paddingHorizontal: 7, backgroundColor: colors.gray }}>
             <AuthPageDesc title="Hello Again!" subTitle={`Wellcome back you've \n been missed!`} />
+            {error && (
+              <Text style={{ color: "red", textAlign: "center", marginTop: 15 }} >{error}</Text>
+            )}
             <View style={{ paddingHorizontal: 25, marginTop: 25 }}>
               <AuthInput placeholder="Email" value={email} onChange={setEmail} />
               <AuthInput placeholder="Password" value={password} onChange={setPassword} />
@@ -35,9 +45,9 @@ const LoginScreen = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <ActionButton disabled={false} value="Sıgn In" onPress={loginSubmit} />
+              <ActionButton disabled={loading} value="Sıgn In" onPress={loginSubmit} />
             </View>
-            
+
             <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 45 }}>
               <Text style={{ fontWeight: "600", color: colors.darkGray, marginRight: 5 }}>
                 Not a member?
