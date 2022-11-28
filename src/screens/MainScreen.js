@@ -2,11 +2,16 @@ import { Text, TouchableOpacity, View, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from '@react-navigation/native';
 
+//Store
+import { useDispatch } from "react-redux";
+import { reset } from "../store/auth/authSlice";
+
 //Components
 import AuthPageDesc from "../components/AuthPageDesc";
 
 const MainScreen = ({ navigation }) => {
   const colors = useTheme().colors;
+  const dispatch = useDispatch()
 
   return (
     <SafeAreaView>
@@ -23,13 +28,13 @@ const MainScreen = ({ navigation }) => {
             <View style={{ borderWidth: 1, borderColor: "white", height: 55, borderRadius: 15, flexDirection: "row", justifyContent: "space-between" }}>
               <TouchableOpacity
                 style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderBottomLeftRadius: 10, borderTopRightRadius: 15, borderBottomRightRadius: 15, width: "50%", alignItems: "center", justifyContent: "center" }}
-                onPress={() => navigation.navigate('Register')}
+                onPress={() => { navigation.navigate('Register'); dispatch(reset()) }}
               >
                 <Text style={{ fontWeight: "600", }}>Register</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ width: "50%", alignItems: "center", justifyContent: "center" }}
-                onPress={() => { navigation.navigate('Login'); }}
+                onPress={() => { navigation.navigate('Login'); dispatch(reset()) }}
               >
                 <Text style={{ fontWeight: "600", color: colors.textPrimary }}>Login</Text>
               </TouchableOpacity>
