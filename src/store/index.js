@@ -3,6 +3,10 @@ import authSlice from "./auth/authSlice";
 
 export const store = configureStore({
     reducer: {
-        auth : authSlice,
-    }
+        auth: authSlice,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        immutableCheck: false,
+        serializableCheck: false,
+    })
 })
