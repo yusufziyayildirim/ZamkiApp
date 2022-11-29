@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './AppNavigator';
 import AuthStack from './AuthStack';
-import { useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme } from 'react-native';
 import { DarkTheme, LightTheme } from '../theme/colors';
 
 import SplashScreen from '../screens/SplashScreen';
+import WizardLangScreen from '../screens/AuthScreens/WizardLangScreen';
 
 //Stack
 import { useDispatch, useSelector } from "react-redux";
@@ -20,16 +21,19 @@ const Router = () => {
         dispatch(isTokenValid())
     }, []);
 
-    const { userToken } = useSelector(state => state.auth);
     const isLoggedIn = useSelector(selectIsLoggedIn);
+    const { userInfo } = useSelector(state => state.auth);
 
     return (
         <NavigationContainer theme={scheme === 'dark' ? DarkTheme : LightTheme}>
+            <StatusBar barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={scheme === 'dark' ? '#010101' : '#f2f1f6'} />
             {
-                userToken == null
+                isLoggedIn == null
                     ? < SplashScreen />
                     : (isLoggedIn)
-                        ? <AppNavigator />
+                        ? ((userInfo.learning.length == 0))
+                            ? <WizardLangScreen />
+                            : <AppNavigator />
                         : <AuthStack />
             }
         </NavigationContainer>

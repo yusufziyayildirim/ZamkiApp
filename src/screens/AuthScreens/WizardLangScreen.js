@@ -6,6 +6,13 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 //Languages data
 import { languages } from '../../constants/languages';
 
+//Service
+import UserService from '../../services/UserService';
+
+//Store
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from '../../store/auth/authSlice';
+
 //Components
 import SelectLangItem from '../../components/SelectLangItem';
 import DismissKeyboard from '../../components/DismissKeyboard';
@@ -20,6 +27,9 @@ const WizardLangScreen = () => {
     const [alsoSpeaking, setAlsoSpeaking] = useState([])
     const [learning, setLearning] = useState([])
     const [message, setMessage] = useState()
+    const [loading, setLoading] = useState(false)
+
+    const dispatch = useDispatch()
 
     //Prev wizard
     const next = () => {
@@ -39,16 +49,17 @@ const WizardLangScreen = () => {
     }
 
     //Finish wizard
-    const finish = () => {
+    const finish = async () => {
         if (nativeIn.length == 0) {
             setMessage("Please select native language")
         } else if (learning.length == 0) {
             setMessage("Please select learning language")
         } else {
             setMessage("")
-            console.log("Native In", nativeIn);
-            console.log("Also Speaking", alsoSpeaking);
-            console.log("Learning", learning);
+            setLoading(true)
+            const response = await UserService.setUserLanguage(nativeIn, alsoSpeaking, learning)
+            dispatch(setUserInfo(response.data.data))
+            setLoading(false)
         }
     }
 
@@ -96,9 +107,9 @@ const WizardLangScreen = () => {
     }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: colors.background }}>
             <DismissKeyboard>
-                <View style={{ backgroundColor: colors.background, marginTop: 15 }}>
+                <View style={{ backgroundColor: colors.background, paddingTop: 5 }}>
                     <View style={{ alignItems: 'center' }}>
                         {/* Header */}
                         <View style={{ width: 280, height: 70 }}>
@@ -130,7 +141,7 @@ const WizardLangScreen = () => {
                         </View>
                     </View>
 
-                    <View style={{ width: "100%" }}>
+                    <View style={{ width: "100%", height: "91.8%" }}>
                         {currentStep == 0 &&
                             scrollAndSearchLang(nativeIn, setNativeIn)
                         }
@@ -142,7 +153,7 @@ const WizardLangScreen = () => {
                         }
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", marginTop: 10 }}>
                             {currentStep > 0 ?
-                                <View style={[styles.centerElement, { left: 15, width: 80, height: 35 }]}>
+                                <View style={[styles.centerElement, { left: 15, width: 80, height: 75, bottom: 10 }]}>
                                     <ActionButton value="Prev" width={60} height={40} onPress={prev} />
                                 </View>
                                 : <Text />
@@ -151,13 +162,13 @@ const WizardLangScreen = () => {
                                 <Text style={{ color: colors.primary, textAlign: "center", fontWeight: "700", width: "50%" }}>{message} !..</Text>
                             )}
                             {(currentStep + 1) < steps.length &&
-                                <View style={[styles.centerElement, { right: 15, width: 80, height: 35 }]}>
+                                <View style={[styles.centerElement, { right: 15, width: 80, height: 65, bottom: 10 }]}>
                                     <ActionButton value="Next" width={60} height={40} onPress={next} />
                                 </View>
                             }
                             {(currentStep + 1) == steps.length &&
-                                <View style={[styles.centerElement, { right: 15, width: 80, height: 35 }]}>
-                                    <ActionButton value="Finish" width={60} height={40} onPress={finish} />
+                                <View style={[styles.centerElement, { right: 15, width: 80, height: 75, bottom: 10 }]}>
+                                    <ActionButton disabled={loading} value="Finish" width={60} height={40} onPress={finish} />
                                 </View>
                             }
                         </View>

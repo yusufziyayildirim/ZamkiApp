@@ -18,7 +18,7 @@ const authSlice = createSlice({
             state.error = false
             state.success = false
         },
-        setUserInfo(state, payload) {
+        setUserInfo(state, { payload }) {
             state.userInfo = payload
         },
     },
