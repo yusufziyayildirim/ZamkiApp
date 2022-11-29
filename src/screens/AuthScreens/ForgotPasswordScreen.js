@@ -5,10 +5,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useTheme } from '@react-navigation/native';
 
 //Components
-import AuthInput from "../components/AuthInput";
-import AuthPageDesc from "../components/AuthPageDesc";
-import ActionButton from "../components/ActionButton";
-import DismissKeyboard from "../components/DismissKeyboard";
+import AuthInput from "../../components/AuthInput";
+import AuthPageDesc from "../../components/AuthPageDesc";
+import ActionButton from "../../components/ActionButton";
+import DismissKeyboard from "../../components/DismissKeyboard";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const colors = useTheme().colors;

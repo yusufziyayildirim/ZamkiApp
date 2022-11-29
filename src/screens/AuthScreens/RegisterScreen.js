@@ -6,14 +6,14 @@ import { useTheme } from '@react-navigation/native';
 
 //Store
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../store/auth/authActions";
-import { reset } from "../store/auth/authSlice";
+import { register } from "../../store/auth/authActions";
+import { reset } from "../../store/auth/authSlice";
 
 //Components
-import AuthInput from "../components/AuthInput";
-import AuthPageDesc from "../components/AuthPageDesc";
-import ActionButton from "../components/ActionButton";
-import DismissKeyboard from "../components/DismissKeyboard";
+import AuthInput from "../../components/AuthInput";
+import AuthPageDesc from "../../components/AuthPageDesc";
+import ActionButton from "../../components/ActionButton";
+import DismissKeyboard from "../../components/DismissKeyboard";
 
 const RegisterScreen = ({ navigation }) => {
   const colors = useTheme().colors;

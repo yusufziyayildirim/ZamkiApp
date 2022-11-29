@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import SelectLangItem from '../components/SelectLangItem';
-import { languages } from '../constants/languages';
-import DismissKeyboard from '../components/DismissKeyboard';
-import ActionButton from '../components/ActionButton';
+
+//Languages data
+import { languages } from '../../constants/languages';
+
+//Components
+import SelectLangItem from '../../components/SelectLangItem';
+import DismissKeyboard from '../../components/DismissKeyboard';
+import ActionButton from '../../components/ActionButton';
 
 const WizardLangScreen = () => {
     const colors = useTheme().colors;

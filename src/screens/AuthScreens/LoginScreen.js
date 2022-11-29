@@ -6,13 +6,13 @@ import { useTheme } from '@react-navigation/native';
 
 //Store
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../store/auth/authActions";
+import { login } from "../../store/auth/authActions";
 
 //Components
-import AuthInput from "../components/AuthInput";
-import AuthPageDesc from "../components/AuthPageDesc";
-import ActionButton from "../components/ActionButton";
-import DismissKeyboard from "../components/DismissKeyboard";
+import AuthInput from "../../components/AuthInput";
+import AuthPageDesc from "../../components/AuthPageDesc";
+import ActionButton from "../../components/ActionButton";
+import DismissKeyboard from "../../components/DismissKeyboard";
 
 const LoginScreen = ({ navigation }) => {
   const colors = useTheme().colors;

@@ -4,10 +4,10 @@ import { useTheme } from '@react-navigation/native';
 
 //Store
 import { useDispatch } from "react-redux";
-import { reset } from "../store/auth/authSlice";
+import { reset } from "../../store/auth/authSlice";
 
 //Components
-import AuthPageDesc from "../components/AuthPageDesc";
+import AuthPageDesc from "../../components/AuthPageDesc";
 
 const MainScreen = ({ navigation }) => {
   const colors = useTheme().colors;
@@ -19,7 +19,7 @@ const MainScreen = ({ navigation }) => {
         <View style={{ height: "50%", borderRadius: 40 }} >
           <Image
             style={{ height: "100%", width: "100%", borderRadius: 40 }}
-            source={require('../assets/images/mainBg.webp')}
+            source={require('../../assets/images/mainBg.webp')}
           />
         </View>
         <View style={{ height: "50%", justifyContent: "space-around", paddingTop: 20 }}>
