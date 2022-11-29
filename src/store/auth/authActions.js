@@ -33,3 +33,18 @@ export const login = createAsyncThunk(
     }
 )
 
+export const isTokenValid = createAsyncThunk(
+    'user/getUserDetails',
+    async (arg, { rejectWithValue }) => {
+        try {
+            const response = await AuthService.isTokenValid()
+            return response
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
