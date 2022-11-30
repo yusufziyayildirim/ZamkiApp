@@ -49,10 +49,22 @@ const isTokenValid = async () => {
     return [token, currentUser.data.data[0]]
 }
 
+const logout = async () => {
+    const headers = await headerConfig();
+    const response = await axios.post(routes.LOGOUT, {}, { headers: headers })
+
+    if (response.data.status) {
+        AsyncStorage.getAllKeys()
+            .then(keys => AsyncStorage.multiRemove(keys))
+    }
+    return response
+}
+
 const AuthService = {
     register,
     login,
     isTokenValid,
+    logout
 };
 
 export default AuthService;

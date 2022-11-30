@@ -48,3 +48,20 @@ export const isTokenValid = createAsyncThunk(
         }
     }
 )
+
+export const logout = createAsyncThunk(
+    'user/logout',
+    async (arg, { rejectWithValue }) => {
+        try {
+            const response = await AuthService.logout()
+            return response
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
+

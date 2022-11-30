@@ -5,7 +5,8 @@ import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 
 //Store
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from '../../store/auth/authActions';
 
 //Components
 import ActionButton from '../../components/ActionButton';
@@ -14,10 +15,12 @@ import ProfileListItem from '../../components/ProfileListItem';
 const ProfileScreen = ({ navigation }) => {
     const colors = useTheme().colors;
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-    const { userInfo } = useSelector(state => state.auth)
+    const { userInfo, loading } = useSelector(state => state.auth)
 
-    const logout = () => {
+    const dispatch = useDispatch()
 
+    const logoutSubmit = () => {
+        dispatch(logout())
     }
 
     return (
@@ -62,7 +65,6 @@ const ProfileScreen = ({ navigation }) => {
                         <Text style={[styles.contentTitle, { color: colors.darkGray }]}>Diğer</Text>
                         <ProfileListItem onPress={() => setLogoutModalVisible(true)} title="Logout" icon="arrow-right" rightArrow={false} />
                     </View>
-
                 </View>
 
                 {
@@ -72,7 +74,7 @@ const ProfileScreen = ({ navigation }) => {
                             style={[styles.logoutModalContent, { backgroundColor: colors.lightGray }]}>
                             <Text style={{ fontSize: 17, fontWeight: "600", color: colors.textPrimary }}>Are you sure you want to log out?</Text>
                             <View style={{ flexDirection: "row", marginTop: 10, justifyContent: "space-between" }}>
-                                <ActionButton value="Logout" onPress={logout} width={120} height={40} />
+                                <ActionButton value="Logout" disabled={loading} onPress={logoutSubmit} width={120} height={40} />
                                 <ActionButton value="Cancel" onPress={() => setLogoutModalVisible(false)} width={120} height={40} />
                             </View>
                         </View>
