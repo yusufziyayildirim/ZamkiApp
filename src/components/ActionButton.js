@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
 //Store
 import { useDispatch } from "react-redux";
@@ -21,7 +21,7 @@ const ActionButton = ({ value, onPress = null, disabled = false, height, width }
             onPress={handlePress}
         >
             {disabled
-                ? <Text style={{ fontWeight: "600", color: "#fff" }}>Loading...</Text>
+                ? <ActivityIndicator color="#fff" />
                 : <Text style={{ fontWeight: "600", color: "#fff" }}>{value}</Text>
             }
         </TouchableOpacity>
