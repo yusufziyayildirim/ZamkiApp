@@ -5,6 +5,7 @@ const LightTheme = {
         lightGray: '#f6f6f6',
         darkGray: '#929397',
         background: '#f2f1f6',
+        backgroundSecondary: '#fff',
         textPrimary: '#111',
         textSecondary: '#A9A9A9'
     },
@@ -16,6 +17,7 @@ const DarkTheme = {
         lightGray: '#171717',
         darkGray: '#A9A9A9',
         background: '#010101',
+        backgroundSecondary: '#111',
         textPrimary: '#fff',
         textSecondary: '#A9A9A9'
     },
