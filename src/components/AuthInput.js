@@ -12,7 +12,7 @@ const AuthInput = ({ placeholder, value, onChange, secure = null }) => {
                 placeholder={placeholder}
                 placeholderTextColor="#bdbbc2"
                 autoCapitalize="none"
-                secureTextEntry={isSecure}
+                secureTextEntry={isSecure == null ? false : isSecure}
                 value={value}
                 onChangeText={(value) => onChange(value)}
                 style={{
