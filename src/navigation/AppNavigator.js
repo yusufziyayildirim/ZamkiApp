@@ -17,6 +17,7 @@ import ProfileScreen from '../screens/TabScreens/ProfileScreen';
 import EditProfileScreen from '../screens/AppScreens/EditProfileScreen';
 import LanguagesScreen from '../screens/AppScreens/LanguagesScreen';
 import EditLanguagesScreen from '../screens/AppScreens/EditLanguagesScreen';
+import ChangePasswordScreen from '../screens/AppScreens/ChangePasswordScreen';
 
 const Tab = createBottomTabNavigator();
 const AppStack = createNativeStackNavigator();
@@ -79,6 +80,29 @@ function ProfileStack() {
                 component={EditLanguagesScreen}
                 options={({ route, navigation }) => ({
                     title: route.params.title,
+                    headerShadowVisible: false,
+                    headerTitleAlign: 'center',
+                    headerTintColor: colors.textPrimary,
+                    headerStyle: {
+                        backgroundColor: colors.background,
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            style={{ padding: 5 }}
+                            onPress={
+                                () => navigation.goBack()
+                            }
+                        >
+                            <FontAwesome name="chevron-left" size={20} color={colors.textPrimary} />
+                        </TouchableOpacity>
+                    )
+                })}
+            />
+            <ProfilStack.Screen
+                name="ChangePassword"
+                component={ChangePasswordScreen}
+                options={({ navigation }) => ({
+                    title: "Change Password",
                     headerShadowVisible: false,
                     headerTitleAlign: 'center',
                     headerTintColor: colors.textPrimary,

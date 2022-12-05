@@ -70,11 +70,35 @@ const updateUserLanguage = async (data, route) => {
     }
 }
 
+const changePassword = async (password, new_password, new_password_confirmation) => {
+    try {
+        const response = await axios
+            .post(routes.CHANGE_PASSWORD,
+                {
+                    password,
+                    new_password,
+                    new_password_confirmation
+                },
+                {
+                    headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+};
+
 
 const UserService = {
     setUserLanguage,
     setUserProfile,
-    updateUserLanguage
+    updateUserLanguage,
+    changePassword
 };
 
 export default UserService;

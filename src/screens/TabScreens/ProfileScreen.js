@@ -39,7 +39,7 @@ const ProfileScreen = ({ navigation }) => {
                             userInfo.img ? (
                                 <Image
                                     style={styles.headerUserImg}
-                                    source={{ uri: `${URL}/storage/${userInfo.img}`}}
+                                    source={{ uri: `${URL}/storage/${userInfo.img}` }}
                                 />
                             ) : (
                                 <View style={styles.headerUserImg}>
@@ -56,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
                         <ProfileListItem onPress={() => { navigation.navigate('EditProfile') }} title="Edit profile" icon="info" rightArrow={true} />
                         <ProfileListItem onPress={() => { navigation.navigate('Languages') }} title="Languages" icon="language" rightArrow={true} />
                         <ProfileListItem onPress={() => { }} title="Account settings" icon="gear" rightArrow={true} />
-                        <ProfileListItem onPress={() => { }} title="Change password" icon="lock" rightArrow={true} />
+                        <ProfileListItem onPress={() => { navigation.navigate('ChangePassword') }} title="Change password" icon="lock" rightArrow={true} />
                     </View>
 
                     <View>
@@ -78,8 +78,8 @@ const ProfileScreen = ({ navigation }) => {
                             style={[styles.logoutModalContent, { backgroundColor: colors.lightGray }]}>
                             <Text style={{ fontSize: 17, fontWeight: "600", color: colors.textPrimary }}>Are you sure you want to log out?</Text>
                             <View style={{ flexDirection: "row", marginTop: 10, justifyContent: "space-between" }}>
-                                <ActionButton value="Logout" disabled={loading} onPress={logoutSubmit} width={120} height={40} />
-                                <ActionButton value="Cancel" onPress={() => setLogoutModalVisible(false)} width={120} height={40} />
+                                <ActionButton value="Logout" disabled={loading} onPress={logoutSubmit} width={115} height={40} />
+                                <ActionButton value="Cancel" onPress={() => setLogoutModalVisible(false)} width={115} height={40} />
                             </View>
                         </View>
                     </View>
