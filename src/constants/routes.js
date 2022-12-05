@@ -1,4 +1,5 @@
 
+export const URL = "http://10.254.112.61:8000";
 const BASE_URL = "http://10.254.112.61:8000/api";
 const routes = {
     LOGIN: BASE_URL + "/login",
@@ -13,6 +14,7 @@ const routes = {
     UPDATE_NATIVE_IN: BASE_URL + "/update/nativeinlanguage",
     UPDATE_ALSO_SPEAKING: BASE_URL + "/update/alsospeakinglanguage",
     UPDATE_LEARNING: BASE_URL + "/update/learninglanguage",
+    UPDATE_PROFILE: BASE_URL + "/update/profile",
 }
 
 export default routes;
