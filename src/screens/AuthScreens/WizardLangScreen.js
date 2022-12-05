@@ -17,6 +17,7 @@ import { setUserInfo } from '../../store/auth/authSlice';
 import SelectLangItem from '../../components/SelectLangItem';
 import DismissKeyboard from '../../components/DismissKeyboard';
 import ActionButton from '../../components/ActionButton';
+import LangList from '../../components/LangList';
 
 const WizardLangScreen = () => {
     const colors = useTheme().colors;
@@ -143,13 +144,13 @@ const WizardLangScreen = () => {
 
                     <View style={{ width: "100%", height: "91.8%" }}>
                         {currentStep == 0 &&
-                            scrollAndSearchLang(nativeIn, setNativeIn)
+                            <LangList search={search} setSearch={setSearch} lang={nativeIn} setLang={setNativeIn} />
                         }
                         {currentStep == 1 &&
-                            scrollAndSearchLang(alsoSpeaking, setAlsoSpeaking)
+                            <LangList search={search} setSearch={setSearch} lang={alsoSpeaking} setLang={setAlsoSpeaking} />
                         }
                         {currentStep == 2 &&
-                            scrollAndSearchLang(learning, setLearning)
+                            <LangList search={search} setSearch={setSearch} lang={learning} setLang={setLearning} />
                         }
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", marginTop: 10 }}>
                             {currentStep > 0 ?
