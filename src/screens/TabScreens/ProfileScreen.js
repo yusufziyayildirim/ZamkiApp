@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 
+import { URL } from '../../constants/routes';
+
 //Store
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from '../../store/auth/authActions';
@@ -14,6 +16,7 @@ import ProfileListItem from '../../components/ProfileListItem';
 
 const ProfileScreen = ({ navigation }) => {
     const colors = useTheme().colors;
+
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
     const { userInfo, loading } = useSelector(state => state.auth)
 
@@ -36,7 +39,7 @@ const ProfileScreen = ({ navigation }) => {
                             userInfo.img ? (
                                 <Image
                                     style={styles.headerUserImg}
-                                    source={{ uri: userInfo.img }}
+                                    source={{ uri: `${URL}/storage/${userInfo.img}`}}
                                 />
                             ) : (
                                 <View style={styles.headerUserImg}>
@@ -50,7 +53,8 @@ const ProfileScreen = ({ navigation }) => {
                 <View>
                     <View>
                         <Text style={[styles.contentTitle, { color: colors.darkGray }]}>Hesabım</Text>
-                        <ProfileListItem onPress={() => { }} title="Edit profile" icon="info" rightArrow={true} />
+                        <ProfileListItem onPress={() => { navigation.navigate('EditProfile') }} title="Edit profile" icon="info" rightArrow={true} />
+                        <ProfileListItem onPress={() => { navigation.navigate('Languages') }} title="Languages" icon="language" rightArrow={true} />
                         <ProfileListItem onPress={() => { }} title="Account settings" icon="gear" rightArrow={true} />
                         <ProfileListItem onPress={() => { }} title="Change password" icon="lock" rightArrow={true} />
                     </View>

@@ -2,8 +2,13 @@ import { View, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-n
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 
+import { URL } from '../constants/routes';
+import { useSelector } from 'react-redux';
+
 function TabBar({ state, descriptors, navigation }) {
     const colors = useTheme().colors;
+    const { userInfo } = useSelector((state) => state.auth);
+
     return (
         <SafeAreaView style={{ backgroundColor: colors.background, paddingBottom: Platform.OS === 'android' ? 15 : 0 }}>
 
@@ -71,7 +76,7 @@ function TabBar({ state, descriptors, navigation }) {
                                             borderRadius: 100,
                                             marginBottom:2
                                         }}
-                                        source={{ uri: "https://seamcline.com.ng/students/assets/images/users/1.jpg" }}
+                                        source={{ uri: `${URL}/storage/${userInfo.img}` }}
                                     />
                                 )
                             }
