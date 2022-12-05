@@ -44,10 +44,37 @@ const setUserProfile = async (data) => {
     }
 }
 
+const updateUserLanguage = async (data, route) => {
+    try {
+        const response = await axios
+            .post(
+                route == "Native In" ? routes.UPDATE_NATIVE_IN :
+                    route == "Also Speaking" ? routes.UPDATE_ALSO_SPEAKING :
+                        route == "Learning" && routes.UPDATE_LEARNING,
+
+                route == "Native In" ? { nativeIn: data } :
+                    route == "Also Speaking" ? { alsoSpeaking: data } :
+                        route == "Learning" && { learning: data },
+
+                {
+                    headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+}
+
 
 const UserService = {
     setUserLanguage,
-    setUserProfile
+    setUserProfile,
+    updateUserLanguage
 };
 
 export default UserService;
