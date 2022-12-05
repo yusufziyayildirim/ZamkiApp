@@ -9,11 +9,20 @@ export const getToken = async () => {
     }
 }
 
-export default async function headerConfig() {
+export default async function headerConfig(multipart = false) {
     const token = await getToken()
 
     if (token) {
-        return { Authorization: `Bearer ${token}`, };
+        if (multipart) {
+            return {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            };
+        } else {
+            return {
+                Authorization: `Bearer ${token}`
+            };
+        }
     } else {
         return { 'Content-Type': 'application/json' };
     }
