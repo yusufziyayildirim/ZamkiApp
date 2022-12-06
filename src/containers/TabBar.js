@@ -1,18 +1,21 @@
 import { View, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
+import { useColorScheme } from 'react-native';
 
 import { URL } from '../constants/routes';
 import { useSelector } from 'react-redux';
 
 function TabBar({ state, descriptors, navigation }) {
     const colors = useTheme().colors;
+    let scheme = useColorScheme();
     const { userInfo } = useSelector((state) => state.auth);
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.background, paddingBottom: Platform.OS === 'android' ? 15 : 0 }}>
+        <SafeAreaView style={{ backgroundColor: scheme === 'dark' ? colors.backgroundSecondary : colors.background, paddingBottom: Platform.OS === 'android' ? 15 : 0 }}>
 
-            <View style={[styles.tabBarWrap, { backgroundColor: colors.background, borderTopColor: colors.lightGray, }]}>
+            <View style={[styles.tabBarWrap, { backgroundColor: scheme === 'dark' ? colors.backgroundSecondary : colors.background, borderTopColor: colors.lightGray, }]}>
                 {state.routes.map((route, index) => {
                     const { options } = descriptors[route.key];
                     const label =
@@ -69,15 +72,23 @@ function TabBar({ state, descriptors, navigation }) {
                             }
                             {
                                 (label === "Profile") && (
-                                    <Image
-                                        style={{
-                                            height: 24,
-                                            width: 24,
-                                            borderRadius: 100,
-                                            marginBottom:2
-                                        }}
-                                        source={{ uri: `${URL}/storage/${userInfo.img}` }}
-                                    />
+                                    userInfo.img ? (
+                                        <Image
+                                            style={{
+                                                height: 24,
+                                                width: 24,
+                                                borderRadius: 100,
+                                                marginBottom: 2
+                                            }}
+                                            source={{ uri: `${URL}/storage/${userInfo.img}` }}
+                                        />
+                                    ) : (
+                                        isFocused ? (
+                                            <FontAwesome name="user-circle" size={24} color={colors.textPrimary} />
+                                        ) : (
+                                            <FontAwesome name="user-circle-o" size={24} color={colors.textPrimary} />
+                                        )
+                                    )
                                 )
                             }
 
@@ -96,7 +107,7 @@ const styles = StyleSheet.create({
     tabBarWrap: {
         flexDirection: 'row',
         alignItems: 'center',
-        shadowColor: "#fff",
+        shadowColor: "#111",
         shadowOpacity: 0.1,
         paddingBottom: 5,
         borderTopWidth: 0.5,
