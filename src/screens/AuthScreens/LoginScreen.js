@@ -7,6 +7,7 @@ import { useTheme } from '@react-navigation/native';
 //Store
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/auth/authActions";
+import { reset } from "../../store/auth/authSlice";
 
 //Components
 import AuthInput from "../../components/AuthInput";
@@ -46,13 +47,22 @@ const LoginScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               <ActionButton disabled={loading} value="Sıgn In" onPress={loginSubmit} />
+              {error == "Verify e-mail address" && (
+                <ActionButton disabled={false} value="Verify Email" onPress={() => navigation.navigate("VerifyEmail")} />
+              )}
             </View>
 
             <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 45 }}>
               <Text style={{ fontWeight: "600", color: colors.darkGray, marginRight: 5 }}>
                 Not a member?
               </Text>
-              <TouchableOpacity onPress={() => { navigation.navigate('Register') }}>
+              <TouchableOpacity onPress={() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Register" }],
+                });
+                dispatch(reset())
+              }}>
                 <Text style={{ fontWeight: "600", color: "#8bb2e0" }}>
                   Register now
                 </Text>

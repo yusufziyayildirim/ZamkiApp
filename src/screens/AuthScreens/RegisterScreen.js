@@ -48,7 +48,7 @@ const RegisterScreen = ({ navigation }) => {
         <KeyboardAwareScrollView style={{ height: "100%" }} keyboardShouldPersistTaps='handled'>
           <View style={{ paddingTop: 50, paddingHorizontal: 7, backgroundColor: colors.gray }}>
             <AuthPageDesc title="Hello!" subTitle={`We are happy to see \n you among us`} />
-            
+
             {error && (
               <Text style={{ color: "red", textAlign: "center", marginTop: 15 }} >{error}</Text>
             )}
@@ -68,7 +68,15 @@ const RegisterScreen = ({ navigation }) => {
               <Text style={{ fontWeight: "600", color: colors.darkGray, marginRight: 5 }}>
                 Already have an account?
               </Text>
-              <TouchableOpacity onPress={() => { navigation.navigate('Login'); dispatch(reset()) }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Login" }],
+                  });
+                  dispatch(reset())
+                }}
+              >
                 <Text style={{ fontWeight: "600", color: "#8bb2e0" }}>
                   Sıgn In
                 </Text>

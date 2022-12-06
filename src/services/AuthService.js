@@ -60,11 +60,49 @@ const logout = async () => {
     return response
 }
 
+const forgotPassword = async (email) => {
+    try {
+        const response = await axios
+            .post(routes.RESET_PASSWORD_MAIL,
+                { email },
+                { headers: await headerConfig() }
+            )
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+}
+
+const verifyEmail = async (email) => {
+    try {
+        const response = await axios
+            .post(routes.RESEND_NOTIFICATION,
+                { email },
+                { headers: await headerConfig() }
+            )
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+}
+
+
+
 const AuthService = {
     register,
     login,
     isTokenValid,
-    logout
+    logout,
+    forgotPassword,
+    verifyEmail
 };
 
 export default AuthService;
