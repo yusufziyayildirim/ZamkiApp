@@ -1,26 +1,22 @@
 import { TouchableOpacity, TextInput, View, StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
-import { useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 
-const SearchBox = () => {
+const SearchBox = ({ search, setSearch }) => {
     const colors = useTheme().colors;
 
-    const [search, setSearch] = useState("")
-
-    const onClear = () => {
-        setSearch("")
-    }
     return (
         <View style={{ position: "relative" }}>
             <FontAwesome name="search" size={20} color={colors.darkGray} style={styles.searchIcon} />
-            <TextInput placeholder='Search'
+            <TextInput
+                placeholder='Search'
+                placeholderTextColor={colors.darkGray}
                 value={search}
                 onChangeText={(value) => setSearch(value)}
-                style={[styles.searchInput, { backgroundColor: colors.lightGray, }]}
+                style={[styles.searchInput, { backgroundColor: colors.lightGray, color: colors.textPrimary }]}
             />
             {search.length > 0 && (
-                <TouchableOpacity onPress={onClear} style={styles.closeIcon}>
+                <TouchableOpacity onPress={() => setSearch("")} style={styles.closeIcon}>
                     <FontAwesome name="close" size={24} color={colors.darkGray} />
                 </TouchableOpacity>
             )}
