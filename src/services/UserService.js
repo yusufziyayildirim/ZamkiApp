@@ -93,12 +93,49 @@ const changePassword = async (password, new_password, new_password_confirmation)
     }
 };
 
+const getAllUser = async (page) => {
+    try {
+        const response = await axios
+            .get(`${routes.GET_ALL_USER}?page=${page}`,
+                {
+                    headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+};
+
+const getUser = async (name) => {
+    try {
+        const response = await axios
+            .get(`${routes.GET_USER}?name=${name}`,
+                {
+                    headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+};
 
 const UserService = {
     setUserLanguage,
     setUserProfile,
     updateUserLanguage,
-    changePassword
+    changePassword,
+    getAllUser,
+    getUser
 };
 
 export default UserService;
