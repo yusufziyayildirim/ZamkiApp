@@ -11,7 +11,7 @@ import TabBarPageTitle from '../../components/TabBarPageTitle';
 import UserService from '../../services/UserService';
 import SkeletonLoader from '../../components/SkeletonLoader';
 
-const CommunityScreen = () => {
+const CommunityScreen = ({ navigation }) => {
   const colors = useTheme().colors;
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -84,7 +84,7 @@ const CommunityScreen = () => {
             style={{ height: "89.5%", flexGrow: 0 }}
             data={filtredUsers == null ? users : filtredUsers}
             renderItem={({ item }) =>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => { navigation.navigate('UserDetail', { user: item }) }}>
                 {item && (
                   <UserListItem
                     user={item}

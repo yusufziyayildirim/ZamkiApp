@@ -18,6 +18,7 @@ import EditProfileScreen from '../screens/AppScreens/EditProfileScreen';
 import LanguagesScreen from '../screens/AppScreens/LanguagesScreen';
 import EditLanguagesScreen from '../screens/AppScreens/EditLanguagesScreen';
 import ChangePasswordScreen from '../screens/AppScreens/ChangePasswordScreen';
+import UserDetailScreen from '../screens/AppScreens/UserDetailScreen';
 
 const Tab = createBottomTabNavigator();
 const AppStack = createNativeStackNavigator();
@@ -137,12 +138,48 @@ function BottomTabs() {
 }
 
 function AppNavigator() {
+    const colors = useTheme().colors;
+
     return (
         <AppStack.Navigator>
             <AppStack.Screen
                 name="Tab"
                 component={BottomTabs}
                 options={{ headerShown: false }}
+            />
+            <AppStack.Screen
+                name="UserDetail"
+                component={UserDetailScreen}
+                options={({ navigation, route }) => ({
+                    title: route.params.user.name,
+                    headerShadowVisible: false,
+                    headerTintColor: '#fff',
+                    headerTitleAlign: 'center',
+                    headerStyle: {
+                        backgroundColor: colors.primary
+                    },
+                    headerTitleStyle: {
+                        fontSize: 20,
+                        textAlign: "center",
+                        fontWeight: "700",
+                        textTransform: 'capitalize'
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            style={{ padding: 5 }}
+                            onPress={
+                                () => navigation.goBack()
+                            }
+                        >
+                            <FontAwesome name="chevron-left" size={20} color="#fff" />
+                        </TouchableOpacity>
+                    ),
+                    headerRight: () => (
+                        <TouchableOpacity style={{ padding: 5 }}>
+                            <FontAwesome name="exclamation-circle" size={22} color="#fff" />
+                        </TouchableOpacity>
+                    )
+                })}
             />
         </AppStack.Navigator>
     );
