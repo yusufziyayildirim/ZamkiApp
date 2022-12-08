@@ -13,7 +13,7 @@ const LightTheme = {
 const DarkTheme = {
     colors: {
         primary: '#fc6b68',
-        secondary: '#003359',
+        secondary: '#00A0D2',
         lightGray: '#171717',
         darkGray: '#A9A9A9',
         background: '#010101',
