@@ -28,7 +28,6 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ backgroundColor: colors.primary }}>
-            <StatusBar barStyle='light-content' backgroundColor={colors.primary} />
             <View style={{ backgroundColor: colors.background, minHeight: "100%" }}>
                 <View style={[styles.headerWrap, { backgroundColor: colors.primary }]}>
                     <View style={styles.headerContent}>

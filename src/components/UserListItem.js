@@ -14,7 +14,7 @@ const UserListItem = ({ user }) => {
                 <Image style={styles.userImg} source={{ uri: `${URL}/storage/${user.img}` }} />
             ) : (
                 <View style={[styles.userImg, { backgroundColor: colors.lightGray, alignItems: "center", justifyContent: "center" }]}>
-                    <FontAwesome name="user" size={50} color={colors.darkGray} />
+                    <FontAwesome name="user" size={50} color={colors.textPrimary} />
                 </View>
             )}
             <View style={styles.contentWrap}>
