@@ -129,13 +129,32 @@ const getUser = async (name) => {
     }
 };
 
+const getUserReference = async (id) => {
+    try {
+        const response = await axios
+            .get(`${routes.GET_USER_REFERENCE}?id=${id}`,
+                {
+                    headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+};
+
 const UserService = {
     setUserLanguage,
     setUserProfile,
     updateUserLanguage,
     changePassword,
     getAllUser,
-    getUser
+    getUser,
+    getUserReference
 };
 
 export default UserService;

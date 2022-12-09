@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity, useColorScheme, Image, ScrollView } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import { languages } from '../../constants/languages';
 
+import { languages } from '../../constants/languages';
 import { URL } from '../../constants/routes';
 
-const UserDetailScreen = ({ route }) => {
+const UserDetailScreen = ({ navigation, route }) => {
     const { user } = route.params;
     let scheme = useColorScheme();
     const colors = useTheme().colors;
@@ -21,9 +21,9 @@ const UserDetailScreen = ({ route }) => {
                             <Text style={{ paddingLeft: 5, paddingTop: 2, color: "#fff", fontWeight: "700" }}>Active</Text>
                         </View>
 
-                        <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                        <TouchableOpacity onPress={() => { navigation.push('References', { user: user.id }) }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                             <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700" }}>5</Text>
-                            <FontAwesome style={{ marginLeft: 5, color: "#fff"}} name="quote-right" size={16} color="black" />
+                            <FontAwesome style={{ marginLeft: 5, color: "#fff" }} name="quote-right" size={16} color="black" />
                         </TouchableOpacity>
                     </View>
 
