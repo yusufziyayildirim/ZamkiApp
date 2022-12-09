@@ -16,6 +16,7 @@ const routes = {
     UPDATE_ALSO_SPEAKING: BASE_URL + "/update/alsospeakinglanguage",
     UPDATE_LEARNING: BASE_URL + "/update/learninglanguage",
     UPDATE_PROFILE: BASE_URL + "/update/profile",
+    GET_USER_REFERENCE: BASE_URL + "/getreferences",
 }
 
 export default routes;
