@@ -15,15 +15,22 @@ const UserListItem = ({ user }) => {
                 <ExpoFastImage
                     uri={`${URL}/storage/${user.img}`}
                     cacheKey={user.img.substring(5, user.img.length - 4)}
-                    style={styles.userImg} 
+                    style={styles.userImg}
                 />
-                // <Image style={styles.userImg} source={{ uri: `${URL}/storage/${user.img}` }} />
             ) : (
                 <View style={[styles.userImg, { backgroundColor: colors.lightGray, alignItems: "center", justifyContent: "center" }]}>
                     <FontAwesome name="user" size={50} color={colors.textPrimary} />
                 </View>
             )}
             <View style={styles.contentWrap}>
+                {user.references_count > 0 && (
+                    <View style={{ position: "absolute", right: 75, top: 0, flexDirection: "row", alignItems: "center" }}>
+                        <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700", marginRight: 3, fontSize: 12, color: colors.darkGray }}>{user.references_count}</Text>
+                        <View style={{ justifyContent: "center", width: 18, height: 18, backgroundColor: colors.secondary, borderTopLeftRadius: 15, borderTopEndRadius: 15, borderBottomEndRadius: 15 }}>
+                            <FontAwesome style={{ marginLeft: 5 }} name="quote-right" size={8} color="#fff" />
+                        </View>
+                    </View>
+                )}
                 <View>
                     <Text style={{ fontSize: 17, fontWeight: "700", marginBottom: 5, color: colors.textPrimary }}>{user.name}</Text>
                     <Text style={{ maxWidth: "80%", color: colors.textPrimary }}>{user.desc}</Text>
@@ -71,6 +78,7 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     contentWrap: {
+        position: "relative",
         width: "100%",
         paddingLeft: 15,
         paddingRight: 15,

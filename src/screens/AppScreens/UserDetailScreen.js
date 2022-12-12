@@ -13,7 +13,7 @@ const UserDetailScreen = ({ navigation, route }) => {
     const { user } = route.params;
     let scheme = useColorScheme();
     const colors = useTheme().colors;
-    
+
     const cardBg = scheme === 'dark' ? colors.lightGray : colors.backgroundSecondary;
     const imageUrl = `${FileSystem.cacheDirectory}${user.img.substring(5, user.img.length - 4)}`;
 
@@ -50,8 +50,10 @@ const UserDetailScreen = ({ navigation, route }) => {
                             </View>
 
                             <TouchableOpacity onPress={() => { navigation.push('References', { user: user.id }) }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700" }}>5</Text>
-                                <FontAwesome style={{ marginLeft: 5, color: "#fff" }} name="quote-right" size={16} color="black" />
+                                <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700", marginRight: 3, fontSize: 14, color: colors.textPrimary }}>{user.references_count}</Text>
+                                <View style={{ alignItems: "center", justifyContent: "center", width: 22, height: 22, backgroundColor: colors.secondary, borderTopLeftRadius: 15, borderTopEndRadius: 15, borderBottomEndRadius: 15 }}>
+                                    <FontAwesome name="quote-right" size={12} color="#fff" />
+                                </View>
                             </TouchableOpacity>
                         </View>
 
