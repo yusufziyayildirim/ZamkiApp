@@ -1,17 +1,23 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
+import ExpoFastImage from 'expo-fast-image'
 
 import { URL } from '../constants/routes';
-import { FontAwesome } from '@expo/vector-icons';
 import { languages } from '../constants/languages';
 
 const UserListItem = ({ user }) => {
     const colors = useTheme().colors;
-    
+
     return (
         <View style={[styles.itemWrap, { borderTopColor: colors.lightGray }]}>
             {user.img ? (
-                <Image style={styles.userImg} source={{ uri: `${URL}/storage/${user.img}` }} />
+                <ExpoFastImage
+                    uri={`${URL}/storage/${user.img}`}
+                    cacheKey={user.img.substring(5, user.img.length - 4)}
+                    style={styles.userImg} 
+                />
+                // <Image style={styles.userImg} source={{ uri: `${URL}/storage/${user.img}` }} />
             ) : (
                 <View style={[styles.userImg, { backgroundColor: colors.lightGray, alignItems: "center", justifyContent: "center" }]}>
                     <FontAwesome name="user" size={50} color={colors.textPrimary} />

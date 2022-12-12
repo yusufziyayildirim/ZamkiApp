@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native"
+import { Text, View, ScrollView, TouchableOpacity } from "react-native"
 import { useTheme } from '@react-navigation/native';
+import ExpoFastImage from 'expo-fast-image'
 import UserService from "../../services/UserService";
 
 import { URL } from "../../constants/routes"
@@ -22,28 +23,34 @@ const ReferencesScreen = ({ route, navigation }) => {
         setReferences(response.data.data)
     }
 
+    let date;
+
     return (
         <ScrollView style={{ backgroundColor: colors.backgroundSecondary }}>
             {
                 references ? (
                     references?.map((ref, key) => {
+                        date = new Date(ref.updated_at);
                         return (
                             <TouchableOpacity
                                 key={key}
                                 onPress={() => { navigation.push('UserDetail', { user: ref.from_user }) }}
-                                style={{ flexDirection: "row", paddingVertical: 10, paddingHorizontal: 30, borderTopColor: colors.lightGray, borderTopWidth: 1 }}
+                                style={{ paddingVertical: 15, paddingHorizontal: 30, borderTopColor: colors.lightGray, borderTopWidth: 1 }}
                             >
-                                <Image
-                                    style={{ height: 40, width: 40, borderRadius: 20, marginRight: 10 }}
-                                    source={{ uri: `${URL}/storage/${ref.from_user.img}` }}
-                                />
-                                <View>
-                                    <View style={{ marginBottom: 7 }}>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <ExpoFastImage
+                                        uri={`${URL}/storage/${ref.from_user.img}`}
+                                        cacheKey={ref.from_user.img.substring(5, ref.from_user.img.length - 4)}
+                                        style={{ height: 35, width: 35, borderRadius: 20, marginRight: 10 }}
+                                    />
+                                    <View>
                                         <Text style={{ fontWeight: "700", fontSize: 15, color: colors.textPrimary, marginBottom: 4 }}>{ref.from_user.name}</Text>
-                                        <Text style={{ fontSize: 11, fontWeight: "600", color: colors.darkGray }}>{ref.updated_at}</Text>
+                                        <Text style={{ fontSize: 11, fontWeight: "600", color: colors.darkGray }}>{date.toLocaleDateString()} {date.toLocaleTimeString()}</Text>
                                     </View>
-                                    <Text style={{ fontSize: 13, fontWeight: "600", color: colors.textPrimary }}>{ref.message}</Text>
                                 </View>
+
+
+                                <Text style={{ paddingTop: 10, fontSize: 13, fontWeight: "600", color: colors.textPrimary }}>{ref.message}</Text>
                             </TouchableOpacity>
                         )
                     })

@@ -1,22 +1,23 @@
-import { View, Text, StyleSheet, TouchableOpacity, useColorScheme, Image, ScrollView, Modal } from 'react-native'
+import { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, useColorScheme, Image, ScrollView, Modal, ActivityIndicator } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import ImageViewer from 'react-native-image-zoom-viewer';
-// import FastImage from 'react-native-fast-image'
-
+import ExpoFastImage from 'expo-fast-image'
+import * as FileSystem from "expo-file-system";
 
 import { languages } from '../../constants/languages';
 import { URL } from '../../constants/routes';
-import { useState } from 'react';
 
 const UserDetailScreen = ({ navigation, route }) => {
     const { user } = route.params;
     let scheme = useColorScheme();
     const colors = useTheme().colors;
+    
     const cardBg = scheme === 'dark' ? colors.lightGray : colors.backgroundSecondary;
+    const imageUrl = `${FileSystem.cacheDirectory}${user.img.substring(5, user.img.length - 4)}`;
 
     const [imageModalVisible, setImageModalVisible] = useState(false)
-
     const changeImageModalVisible = () => {
         setImageModalVisible(!imageModalVisible)
     }
@@ -30,7 +31,14 @@ const UserDetailScreen = ({ navigation, route }) => {
                 >
                     <FontAwesome name="close" size={24} color="#fff" />
                 </TouchableOpacity>
-                <ImageViewer enableSwipeDown onCancel={changeImageModalVisible} imageUrls={[{ url: `${URL}/storage/${user.img}` }]} />
+                <ImageViewer
+                    imageUrls={[{ url: imageUrl }]}
+                    onCancel={changeImageModalVisible}
+                    loadingRender={() =>
+                        <ActivityIndicator />
+                    }
+                    enableSwipeDown
+                />
             </Modal>
             <ScrollView style={{ backgroundColor: colors.background, maxHeight: "95%" }}>
                 <View style={[styles.headerWrap, { backgroundColor: colors.primary }]}>
@@ -49,7 +57,11 @@ const UserDetailScreen = ({ navigation, route }) => {
 
                         {user.img != "" ? (
                             <TouchableOpacity onPress={changeImageModalVisible}>
-                                <Image style={[styles.headerUserImg, { backgroundColor: 'dark' ? colors.lightGray : "#e0e0e2", borderColor: colors.backgroundSecondary }]} source={{ uri: `${URL}/storage/${user.img}` }} />
+                                <ExpoFastImage
+                                    uri={`${URL}/storage/${user.img}`}
+                                    cacheKey={user.id}
+                                    style={[styles.headerUserImg, { backgroundColor: 'dark' ? colors.lightGray : "#e0e0e2", borderColor: colors.backgroundSecondary }]}
+                                />
                             </TouchableOpacity>
                         ) : (
                             <View style={[styles.headerUserImg, { backgroundColor: 'dark' ? colors.lightGray : "#e0e0e2", borderColor: colors.backgroundSecondary }]}>
@@ -58,78 +70,78 @@ const UserDetailScreen = ({ navigation, route }) => {
                         )}
 
                     </View>
+                </View>
 
-                    <View style={{ height: "100%", paddingHorizontal: 20, marginTop: 70 }}>
-                        <View style={styles.actionButtonWrap}>
-                            <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
-                                <FontAwesome name="phone" size={24} color={colors.secondary} />
-                                <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Voice</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
-                                <FontAwesome name="video-camera" size={24} color={colors.secondary} />
-                                <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Video</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
-                                <FontAwesome name="commenting" size={24} color={colors.secondary} />
-                                <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Message</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={[styles.card, { backgroundColor: cardBg }]}>
-                            <Text style={{ fontWeight: "600", textAlign: "center", color: colors.textPrimary }}>{user.desc}</Text>
-                        </View>
-                        <View style={[styles.card, { backgroundColor: cardBg }]}>
-                            <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Native in</Text>
-                            {user.native_in.map((item, key) => {
-                                let lang = languages.find(lang => lang.id === item.lang);
-                                return (
-                                    <View key={key} style={{ flexDirection: "row", marginTop: 10 }}>
+                <View style={{ height: "100%", paddingHorizontal: 20, marginTop: 70 }}>
+                    <View style={styles.actionButtonWrap}>
+                        <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
+                            <FontAwesome name="phone" size={24} color={colors.secondary} />
+                            <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Voice</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
+                            <FontAwesome name="video-camera" size={24} color={colors.secondary} />
+                            <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Video</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
+                            <FontAwesome name="commenting" size={24} color={colors.secondary} />
+                            <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Message</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.card, { backgroundColor: cardBg }]}>
+                        <Text style={{ fontWeight: "600", textAlign: "center", color: colors.textPrimary }}>{user.desc}</Text>
+                    </View>
+                    <View style={[styles.card, { backgroundColor: cardBg }]}>
+                        <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Native in</Text>
+                        {user.native_in.map((item, key) => {
+                            let lang = languages.find(lang => lang.id === item.lang);
+                            return (
+                                <View key={key} style={{ flexDirection: "row", marginTop: 10 }}>
+                                    <Image
+                                        style={{ width: 20, height: 20, borderRadius: 50, backgroundColor: colors.darkGray }}
+                                        source={lang.img}
+                                    />
+                                    <Text style={[styles.cardItemText, { color: colors.textPrimary }]}>{lang.isoName} ({lang.name})</Text>
+                                </View>
+                            )
+                        })}
+                    </View>
+                    <View style={[styles.card, { backgroundColor: cardBg }]}>
+                        <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Also Speaking</Text>
+                        {user.also_speaking.map((item, key) => {
+                            let lang = languages.find(lang => lang.id === item.lang);
+                            return (
+                                <View key={key} style={{ flexDirection: "row", marginTop: 10 }}>
+                                    <Image
+                                        style={{ width: 20, height: 20, borderRadius: 50, backgroundColor: colors.darkGray }}
+                                        source={lang.img}
+                                    />
+                                    <Text style={[styles.cardItemText, { color: colors.textPrimary }]}>{lang.isoName} ({lang.name})</Text>
+                                </View>
+                            )
+                        })}
+                    </View>
+                    <View style={[styles.card, { backgroundColor: cardBg }]}>
+                        <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Learning</Text>
+                        {user.learning.map((item, key) => {
+                            let lang = languages.find(lang => lang.id === item.lang);
+                            return (
+                                <View key={key} style={{ marginTop: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                                    <View style={{ flexDirection: "row" }}>
                                         <Image
                                             style={{ width: 20, height: 20, borderRadius: 50, backgroundColor: colors.darkGray }}
                                             source={lang.img}
                                         />
                                         <Text style={[styles.cardItemText, { color: colors.textPrimary }]}>{lang.isoName} ({lang.name})</Text>
-                                    </View>
-                                )
-                            })}
-                        </View>
-                        <View style={[styles.card, { backgroundColor: cardBg }]}>
-                            <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Also Speaking</Text>
-                            {user.also_speaking.map((item, key) => {
-                                let lang = languages.find(lang => lang.id === item.lang);
-                                return (
-                                    <View key={key} style={{ flexDirection: "row", marginTop: 10 }}>
-                                        <Image
-                                            style={{ width: 20, height: 20, borderRadius: 50, backgroundColor: colors.darkGray }}
-                                            source={lang.img}
-                                        />
-                                        <Text style={[styles.cardItemText, { color: colors.textPrimary }]}>{lang.isoName} ({lang.name})</Text>
-                                    </View>
-                                )
-                            })}
-                        </View>
-                        <View style={[styles.card, { backgroundColor: cardBg }]}>
-                            <Text style={[styles.contentTitle, { color: colors.textSecondary }]}>Learning</Text>
-                            {user.learning.map((item, key) => {
-                                let lang = languages.find(lang => lang.id === item.lang);
-                                return (
-                                    <View key={key} style={{ marginTop: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Image
-                                                style={{ width: 20, height: 20, borderRadius: 50, backgroundColor: colors.darkGray }}
-                                                source={lang.img}
-                                            />
-                                            <Text style={[styles.cardItemText, { color: colors.textPrimary }]}>{lang.isoName} ({lang.name})</Text>
 
-                                        </View>
-                                        <View style={{ flexDirection: "row" }}>
-                                            <View style={[styles.learningItem, { backgroundColor: colors.primary }]} />
-                                            <View style={[styles.learningItem, { backgroundColor: item.level >= 2 ? colors.primary : colors.darkGray }]} />
-                                            <View style={[styles.learningItem, { backgroundColor: item.level == 3 ? colors.primary : colors.darkGray }]} />
-                                        </View>
                                     </View>
-                                )
-                            })}
-                        </View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <View style={[styles.learningItem, { backgroundColor: colors.primary }]} />
+                                        <View style={[styles.learningItem, { backgroundColor: item.level >= 2 ? colors.primary : colors.darkGray }]} />
+                                        <View style={[styles.learningItem, { backgroundColor: item.level == 3 ? colors.primary : colors.darkGray }]} />
+                                    </View>
+                                </View>
+                            )
+                        })}
                     </View>
                 </View>
             </ScrollView>
