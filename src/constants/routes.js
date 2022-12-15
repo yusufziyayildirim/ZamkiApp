@@ -11,6 +11,7 @@ const routes = {
     CHANGE_PASSWORD: BASE_URL + "/changepassword",
     GET_ALL_USER: BASE_URL + "/getalluser",
     GET_USER: BASE_URL + "/getuser",
+    SEARCH_USER: BASE_URL + "/searchuser",
     SET_USER_LANGUAGES: BASE_URL + "/setuserlanguage",
     UPDATE_NATIVE_IN: BASE_URL + "/update/nativeinlanguage",
     UPDATE_ALSO_SPEAKING: BASE_URL + "/update/alsospeakinglanguage",
