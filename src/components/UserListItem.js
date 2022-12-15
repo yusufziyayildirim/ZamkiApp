@@ -42,7 +42,7 @@ const UserListItem = ({ user }) => {
                             style={styles.flag}
                             source={languages.find(item => item.id === user.native_in[0]?.lang).img}
                         />
-                        <Text style={{ fontWeight: "600", paddingLeft: 3, color: colors.textPrimary }} >+{user.native_in?.length - 1}</Text>
+                        <Text style={{ fontWeight: "600", paddingLeft: 3, color: colors.textPrimary }} >+{(user.native_in?.length + user.also_speaking?.length - 1)}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 15 }}>
                         <Text style={{ fontWeight: "600", color: colors.textPrimary }}>Learns:</Text>

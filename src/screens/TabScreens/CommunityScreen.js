@@ -61,7 +61,7 @@ const CommunityScreen = ({ navigation }) => {
   const searchUser = async () => {
     setRefreshing(true)
     if (debouncedSearch?.length > 0) {
-      const response = await UserService.getUser(search)
+      const response = await UserService.searchUser(search)
       if (response.data.data == null) {
         setFiltredUsers([])
       } else {

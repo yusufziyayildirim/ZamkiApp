@@ -111,12 +111,31 @@ const getAllUser = async (page) => {
     }
 };
 
-const getUser = async (name) => {
+const searchUser = async (name) => {
     try {
         const response = await axios
-            .get(`${routes.GET_USER}?name=${name}`,
+            .get(`${routes.SEARCH_USER}?name=${name}`,
                 {
                     headers: await headerConfig()
+                }
+            );
+        return response
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            return error.response.data.message
+        } else {
+            return error.message
+        }
+    }
+};
+
+const getUser = async (email) => {
+    try {
+        const response = await axios
+            .get(routes.GET_USER,
+                {
+                    headers: await headerConfig(),
+                    params: { email }
                 }
             );
         return response
@@ -153,6 +172,7 @@ const UserService = {
     updateUserLanguage,
     changePassword,
     getAllUser,
+    searchUser,
     getUser,
     getUserReference
 };
