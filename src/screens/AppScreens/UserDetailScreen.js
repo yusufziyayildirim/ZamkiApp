@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, useColorScheme, Image, ScrollView, Modal, ActivityIndicator } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons';
+import { collection, addDoc, where, query, onSnapshot } from "firebase/firestore";
 import { useTheme } from '@react-navigation/native';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import { useSelector } from 'react-redux';
 import ExpoFastImage from 'expo-fast-image'
 import * as FileSystem from "expo-file-system";
+import ImageViewer from 'react-native-image-zoom-viewer';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { languages } from '../../constants/languages';
+import { db } from '../../constants/firebaseConfig';
 import { URL } from '../../constants/routes';
 
 const UserDetailScreen = ({ navigation, route }) => {
@@ -17,9 +20,35 @@ const UserDetailScreen = ({ navigation, route }) => {
     const cardBg = scheme === 'dark' ? colors.lightGray : colors.backgroundSecondary;
     const imageUrl = `${FileSystem.cacheDirectory}${user.img.substring(5, user.img.length - 4)}`;
 
+    const { userInfo } = useSelector(state => state.auth);
     const [imageModalVisible, setImageModalVisible] = useState(false)
+    const [chatId, setChatId] = useState("")
+
+    let docRef = query(collection(db, "chats"), where('users', 'in', [[userInfo.email, user.email], [user.email, userInfo.email]]))
+
+    useEffect(() => {
+        onSnapshot(docRef, (snapshot) => {
+            snapshot.docs.map(item => {
+                setChatId(item.id)
+            })
+        })
+    }, [])
+
     const changeImageModalVisible = () => {
         setImageModalVisible(!imageModalVisible)
+    }
+
+    const createOrGetChat = async () => {
+        if (chatId) {
+            navigation.navigate('Chat', { chatId: chatId, user: user })
+        } else {
+            const res = await addDoc(collection(db, "chats"), {
+                users: [userInfo.email, user.email],
+                visible: [userInfo.email, user.email],
+                messages: []
+            })
+            navigation.navigate('Chat', { chatId: res.id, user: user })
+        }
     }
 
     return (
@@ -40,8 +69,8 @@ const UserDetailScreen = ({ navigation, route }) => {
                     enableSwipeDown
                 />
             </Modal>
-            <ScrollView style={{ backgroundColor: colors.background, maxHeight: "95%" }}>
-                <View style={[styles.headerWrap, { backgroundColor: colors.primary }]}>
+            <ScrollView style={{ backgroundColor: colors.primary, maxHeight: "95%" }}>
+                <View style={[styles.headerWrap, { zIndex: 10 }]}>
                     <View style={styles.headerContent}>
                         <View style={{ left: 0, right: 0, flexDirection: "row", width: "110%", position: "absolute", bottom: 10, alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
@@ -49,12 +78,14 @@ const UserDetailScreen = ({ navigation, route }) => {
                                 <Text style={{ paddingLeft: 5, paddingTop: 2, color: "#fff", fontWeight: "700" }}>Active</Text>
                             </View>
 
-                            <TouchableOpacity onPress={() => { navigation.push('References', { user: user.id }) }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700", marginRight: 3, fontSize: 14, color: colors.textPrimary }}>{user.references_count}</Text>
-                                <View style={{ alignItems: "center", justifyContent: "center", width: 22, height: 22, backgroundColor: colors.secondary, borderTopLeftRadius: 15, borderTopEndRadius: 15, borderBottomEndRadius: 15 }}>
-                                    <FontAwesome name="quote-right" size={12} color="#fff" />
-                                </View>
-                            </TouchableOpacity>
+                            {user.references_count > 0 && (
+                                <TouchableOpacity onPress={() => { navigation.push('References', { user: user.id }) }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                                    <Text style={{ paddingTop: 6, color: "#fff", fontWeight: "700", marginRight: 3, fontSize: 14, color: colors.textPrimary }}>{user.references_count}</Text>
+                                    <View style={{ alignItems: "center", justifyContent: "center", width: 22, height: 22, backgroundColor: colors.secondary, borderTopLeftRadius: 15, borderTopEndRadius: 15, borderBottomEndRadius: 15 }}>
+                                        <FontAwesome name="quote-right" size={12} color="#fff" />
+                                    </View>
+                                </TouchableOpacity>
+                            )}
                         </View>
 
                         {user.img != "" ? (
@@ -74,7 +105,7 @@ const UserDetailScreen = ({ navigation, route }) => {
                     </View>
                 </View>
 
-                <View style={{ height: "100%", paddingHorizontal: 20, marginTop: 70 }}>
+                <View style={{ height: "150%", paddingHorizontal: 20, paddingTop: 70, backgroundColor: colors.background }}>
                     <View style={styles.actionButtonWrap}>
                         <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
                             <FontAwesome name="phone" size={24} color={colors.secondary} />
@@ -84,7 +115,7 @@ const UserDetailScreen = ({ navigation, route }) => {
                             <FontAwesome name="video-camera" size={24} color={colors.secondary} />
                             <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Video</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
+                        <TouchableOpacity onPress={createOrGetChat} style={[styles.actionButton, { backgroundColor: cardBg }]}>
                             <FontAwesome name="commenting" size={24} color={colors.secondary} />
                             <Text style={[styles.actionButtonText, { color: colors.secondary }]}>Message</Text>
                         </TouchableOpacity>

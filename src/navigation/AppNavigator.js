@@ -1,8 +1,9 @@
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import ExpoFastImage from 'expo-fast-image'
 
 //Bottom TabBar
 import TabBar from '../containers/TabBar';
@@ -18,8 +19,11 @@ import EditProfileScreen from '../screens/AppScreens/EditProfileScreen';
 import LanguagesScreen from '../screens/AppScreens/LanguagesScreen';
 import EditLanguagesScreen from '../screens/AppScreens/EditLanguagesScreen';
 import ChangePasswordScreen from '../screens/AppScreens/ChangePasswordScreen';
+
+//App Screens
 import UserDetailScreen from '../screens/AppScreens/UserDetailScreen';
 import ReferencesScreen from '../screens/AppScreens/ReferencesScreen';
+import ChatScreen from '../screens/AppScreens/ChatScreen';
 
 const Tab = createBottomTabNavigator();
 const AppStack = createNativeStackNavigator();
@@ -185,7 +189,7 @@ function AppNavigator() {
             <AppStack.Screen
                 name="References"
                 component={ReferencesScreen}
-                options={({ navigation, route }) => ({
+                options={({ navigation }) => ({
                     title: "References",
                     headerShadowVisible: false,
                     headerTintColor: colors.textPrimary,
@@ -202,6 +206,66 @@ function AppNavigator() {
                         >
                             <FontAwesome name="chevron-left" size={20} color={colors.textPrimary} />
                         </TouchableOpacity>
+                    )
+                })}
+            />
+            <AppStack.Screen
+                name="Chat"
+                component={ChatScreen}
+                options={({ navigation, route }) => ({
+                    title: "",
+                    headerStyle: {
+                        backgroundColor: colors.lightGray
+                    },
+                    headerLeft: () => (
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <TouchableOpacity
+                                style={{ padding: 5 }}
+                                onPress={
+                                    () => navigation.goBack()
+                                }
+                            >
+                                <FontAwesome name="chevron-left" size={20} color={colors.textPrimary} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ flexDirection: "row", alignItems: "center", marginLeft: 15 }}
+                                onPress={() => navigation.navigate('UserDetail', { user: route.params.user })}
+                            >
+                                {route.params.user.img ? (
+                                    <ExpoFastImage
+                                        uri={`${URL}/storage/${route.params.user.img}`}
+                                        cacheKey={route.params.user.img.substring(5, route.params.user.img.length - 4)}
+                                        style={{ height: 30, width: 30, borderRadius: 100 }}
+                                    />
+                                ) : (
+                                    <View style={{ height: 30, width: 30, borderRadius: 100, backgroundColor: colors.darkGray, alignItems: "center", justifyContent: "center" }} >
+                                        <FontAwesome name="user" size={20} color="#fff" />
+                                    </View>
+                                )}
+                                <Text style={{ fontSize: 17, paddingLeft: 9, fontWeight: "600", color: colors.textPrimary, marginRight: 5 }}>{route.params.user.name}</Text>
+                                <View style={{ width: 14, height: 14, backgroundColor: "green", borderRadius: 50 }} />
+                            </TouchableOpacity>
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <>
+                            <TouchableOpacity
+                                style={{ padding: 10, paddingHorizontal: 15 }}
+                            // onPress={
+                            //   () => navigation.goBack()
+                            // }
+                            >
+                                <FontAwesome name="video-camera" size={24} color={colors.textPrimary} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ padding: 10 }}
+                            // onPress={
+                            //   // () => navigation.goBack()
+                            // }
+                            >
+                                <FontAwesome name="phone" size={24} color={colors.textPrimary} />
+                            </TouchableOpacity>
+                        </>
                     )
                 })}
             />

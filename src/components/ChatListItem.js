@@ -1,13 +1,16 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import ExpoFastImage from 'expo-fast-image'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { URL } from '../constants/routes';
 
-const ChatListItem = ({ userImg, userName, userMessage, countNewMessage }) => {
+const ChatListItem = ({ userImg, userName, lastMessage, countNewMessage, selected = null }) => {
     const colors = useTheme().colors;
+    const { userInfo } = useSelector(state => state.auth);
 
     return (
-        <View style={countNewMessage > 0 ? [styles.newMessageItemWrap, { backgroundColor: colors.lightGray, }] : styles.itemWrap}>
+        <View style={countNewMessage > 0 ? [styles.newMessageItemWrap, { backgroundColor: colors.lightGray }] : styles.itemWrap}>
             {userImg ? (
                 <ExpoFastImage
                     uri={`${URL}/storage/${userImg}`}
@@ -16,7 +19,7 @@ const ChatListItem = ({ userImg, userName, userMessage, countNewMessage }) => {
                 />
             ) : (
                 <View style={styles.userImg}>
-                    <FontAwesome name="user" size={35} color="#fff" />
+                    <FontAwesome name="user" size={30} color="#fff" />
                 </View>
             )}
             <View style={{ paddingLeft: 15, height: 50, justifyContent: "space-around" }}>
@@ -24,15 +27,15 @@ const ChatListItem = ({ userImg, userName, userMessage, countNewMessage }) => {
                 <Text style={{ color: colors.secondary }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: -3 }}>
                         {
-                            userMessage[0] ?
-                                userMessage[1].received ? (
+                            lastMessage?.user._id == userInfo.email ?
+                                lastMessage?.received ? (
                                     < Ionicons name="checkmark-done-sharp" size={18} color={colors.primary} />
                                 ) : (
                                     <Ionicons name="checkmark-done-outline" size={18} color={colors.darkGray} />
                                 )
                                 : null
                         }
-                        <Text style={{ color: colors.darkGray, marginLeft: 5 }}>{userMessage}</Text>
+                        <Text style={{ color: colors.darkGray, marginLeft: 5 }}>{lastMessage.text}</Text>
                     </View>
                 </Text>
             </View>
@@ -40,6 +43,18 @@ const ChatListItem = ({ userImg, userName, userMessage, countNewMessage }) => {
                 <View style={[styles.newMessageWrap, { backgroundColor: colors.primary }]}>
                     <Text style={{ color: "white", fontWeight: "700" }}>{countNewMessage}</Text>
                 </View>
+            }
+            {
+                selected != null ?
+                    selected ? (
+                        <View style={{ position: "absolute", right: 0, backgroundColor: colors.primary, width: 30, height: 30, borderRadius: 100, alignItems: "center", justifyContent: "center" }}>
+                            <Ionicons name="md-checkmark" size={20} color="#fff" />
+                        </View>
+
+                    ) : (
+                        <View style={{ position: "absolute", right: 0, borderWidth: 2, borderColor: colors.primary, width: 30, height: 30, borderRadius: 100, alignItems: "center", justifyContent: "center" }} />
+                    )
+                    : null
             }
         </View>
     )
@@ -61,7 +76,7 @@ const styles = StyleSheet.create({
     },
     newMessageItemWrap: {
         position: "relative",
-        borderRadius: 10,
+        borderRadius: 15,
         paddingHorizontal: 15,
         marginLeft: 5,
         marginRight: 10,
