@@ -11,6 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { languages } from '../../constants/languages';
 import { db } from '../../constants/firebaseConfig';
 import { URL } from '../../constants/routes';
+import UserStatus from '../../components/UserStatus';
 
 const UserDetailScreen = ({ navigation, route }) => {
     const { user } = route.params;
@@ -69,13 +70,12 @@ const UserDetailScreen = ({ navigation, route }) => {
                     enableSwipeDown
                 />
             </Modal>
-            <ScrollView style={{ backgroundColor: colors.primary, maxHeight: "95%" }}>
+            <ScrollView style={{ height: "100%", }}>
                 <View style={[styles.headerWrap, { zIndex: 10 }]}>
-                    <View style={styles.headerContent}>
+                    <View style={[styles.headerContent, { backgroundColor: colors.primary }]}>
                         <View style={{ left: 0, right: 0, flexDirection: "row", width: "110%", position: "absolute", bottom: 10, alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                <View style={{ width: 20, height: 20, backgroundColor: "green", borderRadius: 50 }} />
-                                <Text style={{ paddingLeft: 5, paddingTop: 2, color: "#fff", fontWeight: "700" }}>Active</Text>
+                                <UserStatus email={user.email} size={20} withText={true} />
                             </View>
 
                             {user.references_count > 0 && (
@@ -105,7 +105,7 @@ const UserDetailScreen = ({ navigation, route }) => {
                     </View>
                 </View>
 
-                <View style={{ height: "150%", paddingHorizontal: 20, paddingTop: 70, backgroundColor: colors.background }}>
+                <View style={{ paddingHorizontal: 20, paddingTop: 70, backgroundColor: colors.background }}>
                     <View style={styles.actionButtonWrap}>
                         <TouchableOpacity style={[styles.actionButton, { backgroundColor: cardBg }]}>
                             <FontAwesome name="phone" size={24} color={colors.secondary} />

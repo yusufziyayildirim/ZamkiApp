@@ -1,9 +1,15 @@
-import { TouchableOpacity, View, Text } from 'react-native';
+import { useRef, useEffect } from 'react';
+import { TouchableOpacity, View, Text, AppState } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { collection, addDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import ExpoFastImage from 'expo-fast-image'
+import { useSelector } from "react-redux";
+
+import { db } from '../constants/firebaseConfig';
+import UserStatus from '../components/UserStatus';
 
 //Bottom TabBar
 import TabBar from '../containers/TabBar';
@@ -144,6 +150,50 @@ function BottomTabs() {
 
 function AppNavigator() {
     const colors = useTheme().colors;
+    const { userInfo } = useSelector(state => state.auth);
+    const appState = useRef(AppState.currentState);
+
+    useEffect(() => {
+        statusOnline()
+    }, []);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener("change", nextAppState => {
+            appState.current = nextAppState;
+            appState.current == "active"
+                ? statusOnline()
+                : statusOffline()
+        });
+        return () => {
+            subscription.remove();
+        };
+    }, []);
+
+    const getUserStatus = async () => {
+        const statusRef = query(collection(db, "online"), where('email', '==', userInfo.email))
+        return await getDocs(statusRef);
+    }
+
+    //Online user
+    const statusOnline = async () => {
+        const status = false
+        const querySnapshot = await getUserStatus();
+        querySnapshot.forEach(() => {
+            status=true
+        })
+        if (!status) {
+            addDoc(collection(db, "online"), {
+                email: userInfo.email
+            })
+        }
+
+    }
+    const statusOffline = async () => {
+        const querySnapshot = await getUserStatus();
+        querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+        })
+    }
 
     return (
         <AppStack.Navigator>
@@ -243,7 +293,7 @@ function AppNavigator() {
                                     </View>
                                 )}
                                 <Text style={{ fontSize: 17, paddingLeft: 9, fontWeight: "600", color: colors.textPrimary, marginRight: 5 }}>{route.params.user.name}</Text>
-                                <View style={{ width: 14, height: 14, backgroundColor: "green", borderRadius: 50 }} />
+                                <UserStatus email={route.params.user.email} size={14} />
                             </TouchableOpacity>
                         </View>
                     ),

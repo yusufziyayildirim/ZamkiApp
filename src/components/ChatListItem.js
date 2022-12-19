@@ -4,21 +4,30 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { URL } from '../constants/routes';
+import UserStatus from './UserStatus';
 
-const ChatListItem = ({ userImg, userName, lastMessage, countNewMessage, selected = null }) => {
+const ChatListItem = ({ userImg, userName, userEmail, lastMessage, countNewMessage, selected = null }) => {
     const colors = useTheme().colors;
     const { userInfo } = useSelector(state => state.auth);
 
     return (
         <View style={countNewMessage > 0 ? [styles.newMessageItemWrap, { backgroundColor: colors.lightGray }] : styles.itemWrap}>
             {userImg ? (
-                <ExpoFastImage
-                    uri={`${URL}/storage/${userImg}`}
-                    cacheKey={userImg.substring(5, userImg.length - 4)}
-                    style={styles.userImg}
-                />
+                <View style={{ position: "relative" }}>
+                    <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", bottom: 0, right: 0, zIndex: 10, width: 14, height: 14, backgroundColor: colors.background, borderRadius: 100 }}>
+                        <UserStatus email={userEmail} size={12} />
+                    </View>
+                    <ExpoFastImage
+                        uri={`${URL}/storage/${userImg}`}
+                        cacheKey={userImg.substring(5, userImg.length - 4)}
+                        style={styles.userImg}
+                    />
+                </View>
             ) : (
-                <View style={styles.userImg}>
+                <View style={[styles.userImg, { position: "absolute" }]}>
+                    <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", bottom: 0, right: 0, zIndex: 10, width: 14, height: 14, backgroundColor: colors.background, borderRadius: 100 }}>
+                        <UserStatus email={userEmail} size={14} />
+                    </View>
                     <FontAwesome name="user" size={30} color="#fff" />
                 </View>
             )}

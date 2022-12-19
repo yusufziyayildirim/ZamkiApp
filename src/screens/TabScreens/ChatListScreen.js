@@ -130,6 +130,7 @@ const ChatListScreen = ({ navigation }) => {
                                                 <ChatListItem
                                                     userImg={usersData.find(otherUser => otherUser.email == secondUserEmail)?.img}
                                                     userName={usersData.find(otherUser => otherUser.email == secondUserEmail)?.name}
+                                                    userEmail={usersData.find(otherUser => otherUser.email == secondUserEmail)?.email}
                                                     lastMessage={item.data().messages[0]}
                                                     countNewMessage={countNewMessage(item.data().messages)}
                                                     selected={longPress ? selectedItem.includes(item.id) : null}
