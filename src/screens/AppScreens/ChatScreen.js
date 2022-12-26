@@ -25,7 +25,7 @@ const ChatScreen = ({ route }) => {
         //real time update
         return onSnapshot(colRef, (snapshot) => {
             setMessages(snapshot.data()?.messages ?? [])
-            if (!(snapshot.data()?.messages[0].received))
+            if (!(snapshot.data()?.messages[0]?.received))
                 changeIsRead()
         })
     }, [])

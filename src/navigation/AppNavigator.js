@@ -176,7 +176,7 @@ function AppNavigator() {
 
     //Online user
     const statusOnline = async () => {
-        const status = false
+        let status = false
         const querySnapshot = await getUserStatus();
         querySnapshot.forEach(() => {
             status=true
@@ -293,7 +293,7 @@ function AppNavigator() {
                                     </View>
                                 )}
                                 <Text style={{ fontSize: 17, paddingLeft: 9, fontWeight: "600", color: colors.textPrimary, marginRight: 5 }}>{route.params.user.name}</Text>
-                                <UserStatus email={route.params.user.email} size={14} />
+                                <UserStatus email={route.params.user.email ?? ""} size={14} />
                             </TouchableOpacity>
                         </View>
                     ),

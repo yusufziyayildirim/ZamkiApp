@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Image, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { db } from '../../constants/firebaseConfig';
 import { URL } from '../../constants/routes';
 
 //Store
@@ -22,8 +23,14 @@ const ProfileScreen = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-    const logoutSubmit = () => {
+    const logoutSubmit = async () => {
+        const email = userInfo.email
         dispatch(logout())
+        const statusRef = query(collection(db, "online"), where('email', '==', email))
+        const querySnapshot = await getDocs(statusRef)
+        querySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+        })
     }
 
     return (

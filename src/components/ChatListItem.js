@@ -15,7 +15,7 @@ const ChatListItem = ({ userImg, userName, userEmail, lastMessage, countNewMessa
             {userImg ? (
                 <View style={{ position: "relative" }}>
                     <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", bottom: 0, right: 0, zIndex: 10, width: 14, height: 14, backgroundColor: colors.background, borderRadius: 100 }}>
-                        <UserStatus email={userEmail} size={12} />
+                        <UserStatus email={userEmail ?? ""} size={12} />
                     </View>
                     <ExpoFastImage
                         uri={`${URL}/storage/${userImg}`}
@@ -26,7 +26,7 @@ const ChatListItem = ({ userImg, userName, userEmail, lastMessage, countNewMessa
             ) : (
                 <View style={[styles.userImg, { position: "relative" }]}>
                     <View style={{ position: "absolute", alignItems: "center", justifyContent: "center", bottom: 0, right: 0, zIndex: 10, width: 14, height: 14, backgroundColor: colors.background, borderRadius: 100 }}>
-                        <UserStatus email={userEmail} size={12} />
+                        <UserStatus email={userEmail ?? ""} size={12} />
                     </View>
                     <FontAwesome name="user" size={30} color="#fff" />
                 </View>
