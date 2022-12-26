@@ -123,22 +123,25 @@ const ChatScreen = ({ route }) => {
                     {...props}
                     containerStyle={{
                         position: "absolute",
-                        backgroundColor: "white",
+                        color: "#fff",
+                        backgroundColor: colors.lightGray,
                         height: 38,
-                        borderRadius: 20,
                         borderTopWidth: 0,
                         marginHorizontal: 10,
                         marginBottom: 11,
                         width: inputText ? "85%" : "74%",
                     }}
+                    textInputProps={{
+                        color: colors.textPrimary
+                    }}
                 />
                 {!inputText &&
                     <>
                         <TouchableOpacity>
-                            <FontAwesome style={{ position: "absolute", right: 15, top: 20 }} name="microphone" size={24} color={colors.textPrimary} />
+                            <FontAwesome style={{ position: "absolute", right: 15, top: 20 }} name="microphone" size={24} color={colors.primary} />
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <FontAwesome style={{ position: "absolute", right: 50, top: 20 }} name="camera" size={24} color={colors.textPrimary} />
+                            <FontAwesome style={{ position: "absolute", right: 50, top: 20 }} name="camera" size={24} color={colors.secondary} />
                         </TouchableOpacity>
                     </>
                 }
@@ -165,7 +168,7 @@ const ChatScreen = ({ route }) => {
     }
 
     return (
-        <View style={{ paddingBottom: Platform.OS === 'android' ? 50 : 25, height: "100%", backgroundColor: scheme === 'dark' ? colors.backgroundSecondary : colors.background }}>
+        <View style={{ paddingBottom: Platform.OS === 'android' ? 15 : 25, height: "100%", backgroundColor: scheme === 'dark' ? colors.backgroundSecondary : colors.background }}>
             <GiftedChat
                 messages={messages.map(x => ({ ...x, createdAt: x?.createdAt?.toDate() }))}
                 onSend={messages => onSend(messages)}

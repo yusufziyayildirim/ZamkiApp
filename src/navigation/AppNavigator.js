@@ -305,7 +305,7 @@ function AppNavigator() {
                             //   () => navigation.goBack()
                             // }
                             >
-                                <FontAwesome name="video-camera" size={24} color={colors.textPrimary} />
+                                <FontAwesome name="video-camera" size={24} color={colors.secondary} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={{ padding: 10 }}
@@ -313,7 +313,7 @@ function AppNavigator() {
                             //   // () => navigation.goBack()
                             // }
                             >
-                                <FontAwesome name="phone" size={24} color={colors.textPrimary} />
+                                <FontAwesome name="phone" size={24} color={colors.secondary} />
                             </TouchableOpacity>
                         </>
                     )

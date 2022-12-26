@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
             )}
             <View style={{ paddingHorizontal: 25, marginTop: 25 }}>
               <AuthInput placeholder="Email" value={email} onChange={setEmail} />
-              <AuthInput placeholder="Password" value={password} onChange={setPassword} />
+              <AuthInput secure={true} placeholder="Password" value={password} onChange={setPassword} />
               <View style={{ alignItems: "flex-end", marginBottom: 10 }}>
                 <TouchableOpacity onPress={() => { navigation.navigate('ForgotPassword') }}>
                   <Text style={{ fontWeight: "500", color: colors.darkGray, marginRight: 5, textAlign: "right", paddingRight: 5 }}>
