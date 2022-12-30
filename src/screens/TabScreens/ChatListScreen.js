@@ -29,6 +29,8 @@ const ChatListScreen = ({ navigation }) => {
     const [selectedItem, setSelectedItem] = useState([]);
     const [deleteModal, setDeleteModal] = useState(false)
 
+    const [chatLength, setChatLength] = useState(false)
+
     const { userInfo } = useSelector(state => state.auth);
     const colRef = query(collection(db, "chats"), where('users', 'array-contains', userInfo.email))
     useEffect(() => {
@@ -104,6 +106,7 @@ const ChatListScreen = ({ navigation }) => {
         setDeleteModal(false)
     }
 
+
     return (
         <TabBarScreenWrap>
             <TabBarPageTitle title="Messages" />
@@ -117,6 +120,9 @@ const ChatListScreen = ({ navigation }) => {
                                 data={filteredChat == null ? chats : filteredChat}
                                 renderItem={({ item }) => {
                                     if (item.data().messages[0] && item.data().visible?.includes(userInfo.email)) {
+                                        if (!chatLength) {
+                                            setChatLength(true)
+                                        }
                                         let secondUserEmail = item.data().users.find(x => x != userInfo.email)
                                         return (
                                             <TouchableOpacity
@@ -163,7 +169,12 @@ const ChatListScreen = ({ navigation }) => {
                                     <View style={{ backgroundColor: colors.lightGray, position: "absolute", height: 130, width: "70%", borderRadius: 15, paddingVertical: 15, paddingHorizontal: 20, shadowColor: "#000", shadowOffset: { width: 0, height: 2, }, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5 }}>
                                         <Text style={{ fontSize: 17, fontWeight: "600", color: colors.textPrimary, textAlign: "center" }}>Are you sure you want to delete {selectedItem.length} message?</Text>
                                         <View style={{ flexDirection: "row", marginTop: 10, justifyContent: "space-between" }}>
-                                            <ActionButton value="Delete" onPress={() => deleteChat()} width={115} height={40} />
+                                            <ActionButton
+                                                value="Delete"
+                                                width={115}
+                                                height={40}
+                                                onPress={() => deleteChat()}
+                                            />
                                             <ActionButton value="Cancel" onPress={() => { setDeleteModal(false); setLongpress(false); setSelectedItem([]) }} width={115} height={40} />
                                         </View>
                                     </View>
@@ -194,6 +205,16 @@ const ChatListScreen = ({ navigation }) => {
                                 </View>
                             )
                         })
+                    )
+                }
+                {
+                    !isLoading && !chatLength && (
+                        <View style={{ height: "100%", alignItems: "center", marginTop: 10 }}>
+                            <FontAwesome5 name="info" size={34} color={colors.textPrimary} />
+                            <Text style={{ textAlign: "center", marginTop: 10, width: "60%", fontWeight: "600", color: colors.textPrimary }}>
+                                You don't have any messages. Check out community and message someone to start practicing your language skills!
+                            </Text>
+                        </View>
                     )
                 }
 
